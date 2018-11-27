@@ -29,9 +29,9 @@ Given several aspects of a student's history with programming as well as how the
     
     -If 2 skillsets above, advantage 10%; below, disadvantage 15%
     
-    -If 3 skillsets above, advantage 15%; ; below, disadvantage 10%
+    -If 3 skillsets above, advantage 15%; below, disadvantage 10%
     
-    -If 4 skillsets above, advantage 20%; ; below, disadvantage 5%
+    -If 4 skillsets above, advantage 20%; below, disadvantage 5%
     
   * Groups numbers (1-4)
   
