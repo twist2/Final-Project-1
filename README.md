@@ -35,13 +35,7 @@ Given several aspects of a student's history with programming as well as how the
     
   * Groups numbers (1-4)
   
-* Grader variation: All graders employ varying levels of leniancy when assessing an assignment
- 
-    - Easy grader: Grades between 80% and 100%
-    
-    - Medium grader: Grades between 70% and 90%
-    
-    - Hard grader: Grades between 60% and 80%
+* Student Participation: A completely random variable based on the total number of classes. 
 
 ## Hypothesis or hypotheses before running the simulation:
 Students who have had prior experience coding in Python will me more likely to pass the course with a higher grade than those who came in with little experience. 
