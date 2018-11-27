@@ -27,12 +27,9 @@ def quizzes(num_quiz, first_score):
     """
     num_quiz = num_quiz + 1
     quiz_list = []
-    # if hist == 'beginner':
-    #     lower =
     for quizzes in range(1, num_quiz):
         reading_adv = random.uniform(0, .2)
         quiz_raw = random.uniform(first_score, 100)
-        print(quiz_raw, reading_adv)
         quiz_1 = (quiz_raw * reading_adv) + quiz_raw
         if quiz_1 >= 100:
             quiz_grade = 100
@@ -40,31 +37,38 @@ def quizzes(num_quiz, first_score):
             quiz_2 = random.uniform(quiz_1, 100)
             quiz_grade = (quiz_1 + quiz_2) / 2
         quiz_list.append(quiz_grade)
-    print(quiz_list)
-    final_quiz_grade = sum(quiz_list)/8
+    final_quiz_grade = (sum(quiz_list)/8)/100
     # We could try to see if the participation factors into this?
     # So far, there are a total of 8 quizzes
     return final_quiz_grade
 
 print(quizzes(8, first_score))
 
-# Create a function that reads in a students prior experience with coding
-# def student_exp():
-#     """Determine the advantage a student has for the success in the course
-#     :param  :
-#     :return :
-#     """
-#     name = input("Please enter your name: ")
-#     hist = input("Describe your level of experience with Python (beginner, intermediate, advanced, expert): ")
-#     if hist == 'beginner':
-#         first_score = random.randint(1, 100)
-#     if hist == 'intermediate':
-#         first_score = random.randint(25, 100)
-#     if hist == 'advanced':
-#         first_score = random.randint(50, 100)
-#     if hist == 'expert':
-#         first_score = random.randint(75, 100)
-#     return first_score
-#
-# print(student_exp())
+def assignment_range(hist):
+    """Determine the advantage a student has for the success in the course
+        :param  :
+        :return :
+        """
+    if hist == 'beginner':
+        lower_score = 40
+    if hist == 'intermediate':
+        lower_score = 60
+    if hist == 'advanced':
+        lower_score = 75
+    if hist == 'expert':
+        lower_score = 85
+    return lower_score
 
+def participation(num_classes):
+    """Predict the grade for the students total participation in class
+    :param num_classes: Total number of classes to participate in
+    """
+    part_total = 0
+    total_classes = num_classes + 1
+    for c in range(0, total_classes):
+        part = random.uniform(0, 10)
+        part_total += part
+    part_total = part_total/(num_classes * 10)
+    return part_total
+
+print(participation(16))
