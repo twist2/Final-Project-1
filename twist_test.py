@@ -114,9 +114,11 @@ def grade(hist, part_points, quiz_points, ind_points): # add parameters for the 
     """
     final_participation = part_points * .10
     final_quizzes = quiz_points * .15
-    #final_assign = (group_points + ind_points + final_points) * .75
+    final_ind_assign = ind_points * .2763  # (10.53% per assignment (3) and 5.25% for the first ind assignment) * 75
+    # final_group_points = group_points * .3159  # (10.53% per assignment (4) * 75
+    # final_assign = final_points * .1578  # (10.53% * 2 for the 2/1 weight per assignment) * 75
 
-    total_points = final_participation + final_quizzes # + final_assign
+    total_points = final_participation + final_quizzes + final_ind_assign # + final_assign
     total_points = round(total_points * 100, 2)
 
     if 100 <= total_points >= 93:
@@ -153,7 +155,7 @@ def run_program(hist):
     total_part = participation(16)
 
     assign_range = assignment_range(hist)
-    ind_points = ind_assign(hist, 4, assign_range)
+    ind_points = ind_assign(4, assign_range)
 
     grade_percent = float(grade(hist, total_part, total_quiz, ind_points))
     grade_list.update({hist:grade_percent}) # Here I am trying to create a dictionary that has the hist as keys and then it will save each grade run as values
