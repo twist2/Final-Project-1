@@ -18,7 +18,6 @@ def quiz_range(hist):
         first_score = 80
     return first_score
 
-first_score = int(quiz_range(hist))
 
 def quizzes(num_quiz, first_score):
     """Predict the grade for the students total quiz scores throughout the course
@@ -40,7 +39,6 @@ def quizzes(num_quiz, first_score):
     final_quiz_grade = (sum(quiz_list)/8)/100
     return final_quiz_grade
 
-total_quiz = quizzes(8, first_score)
 
 def assignment_range(hist):
     """Determine the advantage a student has for the success in the course
@@ -57,7 +55,6 @@ def assignment_range(hist):
         lower_score = 85
     return lower_score
 
-assign_range = assignment_range(hist)
 
 def participation(num_classes):
     """Predict the grade for the students total participation in class
@@ -71,7 +68,6 @@ def participation(num_classes):
     part_total = part_total/(num_classes * 10)
     return part_total
 
-total_part = participation(16)
 
 # Create a function that randomly determines the outcome of group assignments
 def group_assign(self, num_g_assign, first_score):
@@ -132,4 +128,19 @@ def grade(hist, part_points, quiz_points):
     elif total_points <= 65:
         print("As a/an", hist, ", your final grade is an F, and you have NOT passed the course.")
 
-grade(hist, total_part, total_quiz)
+
+def run_program(hist):
+    """Use this function to run all of the previous functions in the program.
+    :param hist: A students prior history with coding
+    :return stats: Statistics on each run that we are producing.
+        # What is the student's final grade based on their history, do they pass the course?
+    """
+    first_score = int(quiz_range(hist))
+    total_quiz = quizzes(8, first_score)
+    total_part = participation(16)
+
+    assign_range = assignment_range(hist)
+
+    grade(hist, total_part, total_quiz)
+
+run_program(hist)
