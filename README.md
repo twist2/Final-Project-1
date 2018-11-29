@@ -16,7 +16,7 @@ Given several aspects of a student's history with programming as well as how the
    
    - Expert: between 80 and 100 for quizzes, and between 85 and 100 for assignments
 
-* Reading advantage: Doing the assigned readings gives you between 10%-50% advantage on quizzes
+* Reading advantage: Doing the assigned readings gives you between 0%-20% advantage on quizzes
 
 * Group assignments: In group assignments, the familiarity your group members have with programming.
   * 2 scenarios: either the ability to pick your partner, or being randomly assigned a partner
