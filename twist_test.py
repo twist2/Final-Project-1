@@ -1,7 +1,9 @@
 import random
+import matplotlib.pyplot as plt
 
 # hist = input("Describe your level of experience with Python (beginner, intermediate, advanced, expert): ")
-hist = 'expert'
+# hist = 'expert'
+grade_list = {}
 
 def quiz_range(hist):
     """Determine the advantage a student has for the success in the course
@@ -105,28 +107,29 @@ def grade(hist, part_points, quiz_points):
     #final_assign = (group_points + ind_points + final_points) * .75
 
     total_points = final_participation + final_quizzes # + final_assign
-    total_points = round(total_points * 100)
+    total_points = round(total_points * 100, 2)
 
     if 100 <= total_points >= 93:
-        print("As a/an", hist, ", your final grade is an A, and you have passed the course.")
+        print("As a/an {}, your final grade is an A, and you have passed the course.".format(hist))
     elif 92.9 <= total_points >= 90:
-        print("As a/an", hist, ", your final grade is an A-, and you have passed the course.")
+        print("As a/an {}, your final grade is an A-, and you have passed the course.".format(hist))
     elif 89.9 <= total_points >=87:
-        print("As a/an", hist, ", your final grade is a B+, and you have passed the course.")
+        print("As a/an {}, your final grade is a B+, and you have passed the course.".format(hist))
     elif 86.9 <= total_points >= 83:
-        print("As a/an", hist, ", your final grade is a B, and you have passed the course.")
+        print("As a/an {}, your final grade is a B, and you have passed the course.".format(hist))
     elif 82.9 <= total_points >= 80:
-        print("As a/an", hist, ", your final grade is a B-, and you have passed the course.")
+        print("As a/an {}, your final grade is a B-, and you have passed the course.".format(hist))
     elif 79.9 <= total_points >= 77:
-        print("As a/an", hist, ", your final grade is a C+, and you have passed the course.")
+        print("As a/an {}, your final grade is a C+, and you have passed the course.".format(hist))
     elif 76.9 <= total_points >= 73:
-        print("As a/an", hist, ", your final grade is a C, and you have passed the course.")
+        print("As a/an {}, your final grade is a C, and you have passed the course.".format(hist))
     elif 72.9 <= total_points >= 70:
-        print("As a/an", hist, ", your final grade is a C-, and you have passed the course.")
+        print("As a/an {}, your final grade is a C-, and you have passed the course.".format(hist))
     elif 69.9 <= total_points >= 65:
-        print("As a/an", hist, ", your final grade is a D, and you have NOT passed the course.")
+        print("As a/an {}, your final grade is a D, and you have NOT passed the course.".format(hist))
     elif total_points <= 65:
-        print("As a/an", hist, ", your final grade is an F, and you have NOT passed the course.")
+        print("As a/an {}, your final grade is an F, and you have NOT passed the course.".format(hist))
+    return total_points
 
 
 def run_program(hist):
@@ -141,6 +144,24 @@ def run_program(hist):
 
     assign_range = assignment_range(hist)
 
-    grade(hist, total_part, total_quiz)
+    grade_percent = float(grade(hist, total_part, total_quiz))
+    grade_list.update({hist:grade_percent}) # Here I am trying to create a dictionary that has the hist as keys and then it will save each grade run as values
 
-run_program(hist)
+def analyze_students(num_exp, num_adv, num_int, num_beg):
+    for tests in range(num_exp):
+        run_program('expert')
+    for tests in range(num_adv):
+        run_program('advanced')
+    for tests in range(num_int):
+        run_program('intermediate')
+    for tests in range(num_beg):
+        run_program('beginner')
+
+# for x in range(3):
+#     run_program(hist)
+analyze_students(3, 7, 12, 18)
+print(grade_list)
+
+# If we run our test 100 times for an expert, and get an average grade, how will be do statistics on that expert?
+# Should we put together a 'fake class' of 3 experts, 7 advanced, 12 intermediate, and 18 beginner?
+# We could then analyze our class to determine the probability of passing?
