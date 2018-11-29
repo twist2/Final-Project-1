@@ -26,9 +26,9 @@ def quizzes(num_quiz, first_score):
     :param num_quiz: Total number of quizzes in the course
     :param first_score: Given the history of the student, the first_score predicts a lower bound for quiz grades
     """
-    num_quiz = num_quiz + 1
+    num_quiz_range = num_quiz + 1
     quiz_list = []
-    for quizzes in range(1, num_quiz):
+    for quizzes in range(1, num_quiz_range):
         reading_adv = random.uniform(0, .2)
         quiz_raw = random.uniform(first_score, 100)
         quiz_1 = (quiz_raw * reading_adv) + quiz_raw
@@ -38,7 +38,7 @@ def quizzes(num_quiz, first_score):
             quiz_2 = random.uniform(quiz_1, 100)
             quiz_grade = (quiz_1 + quiz_2) / 2
         quiz_list.append(quiz_grade)
-    final_quiz_grade = (sum(quiz_list)/8)/100
+    final_quiz_grade = (sum(quiz_list)/num_quiz)/100
     return final_quiz_grade
 
 
@@ -72,30 +72,40 @@ def participation(num_classes):
 
 
 # Create a function that randomly determines the outcome of group assignments
-def group_assign(self, num_g_assign, first_score):
+def group_assign(hist, num_g_assign, lower_score):
     """Predict the grade for the student's grades on the group assignments
+    :param hist: A students prior history with coding
     :param num_g_assign: Total number of group assignments
+    :param lower_score: Given the history of the student, the lower_score predicts a lower bound for quiz grades
     """
 
     # They should have an advantage based on their prior experience and the other students will be completely random
 
 
 # Create a function that randomly determines the outcome of indiviudal assignments
-def ind_assign(self, num_i_assign):
+def ind_assign(num_i_assign, lower_score):
     """Predict the grade for the student's individual assignments
     :param num_i_assign: Total number of individual assignments
+    :param lower_score: Given the history of the student, the lower_score predicts a lower bound for quiz grades
     """
     # They should have an advantage if they have had prior experience
+    num_assign = num_i_assign + 1
+    ind_score = 0
+    for hw in range(1, num_assign):
+        hw_raw = random.uniform(lower_score, 100)
+        ind_score = ind_score + hw_raw
+    final_ind_grade = (ind_score / num_i_assign) / 100
+    return final_ind_grade
 
 # Create a function that randomly determines the final project grade
-def final_proj(self):
+def final_proj():
     """Predict the grade for the student's final project
 
     """
     # This could be completely random since we are working on it now?
 
 # Create a function that adds all the grades up into one for a final probability
-def grade(hist, part_points, quiz_points):
+def grade(hist, part_points, quiz_points, ind_points): # add parameters for the group/ind assignments and final
     """Use all of the following information and the weight of each grade to determine the final grade
         for the student in this course. Will they pass the course?
     :param hist: A students prior history with coding
@@ -143,9 +153,11 @@ def run_program(hist):
     total_part = participation(16)
 
     assign_range = assignment_range(hist)
+    ind_points = ind_assign(hist, 4, assign_range)
 
-    grade_percent = float(grade(hist, total_part, total_quiz))
+    grade_percent = float(grade(hist, total_part, total_quiz, ind_points))
     grade_list.update({hist:grade_percent}) # Here I am trying to create a dictionary that has the hist as keys and then it will save each grade run as values
+
 
 def analyze_students(num_exp, num_adv, num_int, num_beg):
     for tests in range(num_exp):
@@ -165,3 +177,5 @@ print(grade_list)
 # If we run our test 100 times for an expert, and get an average grade, how will be do statistics on that expert?
 # Should we put together a 'fake class' of 3 experts, 7 advanced, 12 intermediate, and 18 beginner?
 # We could then analyze our class to determine the probability of passing?
+
+# Counts vs passing grade
