@@ -1,11 +1,7 @@
 import random
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# hist = input("Describe your level of experience with Python (beginner, intermediate, advanced, expert): ")
-# hist = 'expert'
-grade_list = []
-grade_dict = {}
-count = 0
 
 def quiz_range(hist):
     """Determine the advantage a student has for the success in the course
@@ -65,22 +61,61 @@ def participation(num_classes):
     :param num_classes: Total number of classes to participate in
     """
     part_total = 0
-    total_classes = num_classes + 1
-    for c in range(0, total_classes):
+    for classes in range(num_classes):
         part = random.uniform(0, 10)
         part_total += part
     part_total = part_total/(num_classes * 10)
     return part_total
 
 
-# Create a function that randomly determines the outcome of group assignments
-def group_assign(num_g_assign, lower_score):
+def choose_partner(hist):  # Create a function to choose a partner at random
+    if hist == 'beginner':
+        position = 1
+    if hist == 'intermediate':
+        position = 2
+    if hist == 'advanced':
+        position = 3
+    if hist == 'expert':
+        position = 4
+
+    if position == 1:
+        options = [1, 2]
+    elif position == 2:
+        options = [1, 2, 3]
+    elif position == 3:
+        options = [2, 3, 4]
+    elif position == 4:
+        options = [3, 4]
+
+    partner_position = random.choice(options)
+
+    # if partner is matching your skill level
+    if partner_position - position == 0:
+        percent_adj = 0.0
+    # if partner is above your skill level
+    elif partner_position - position == 1:
+        percent_adj = .05
+    # if partner is below your skill level
+    elif partner_position - position == -1:
+        percent_adj = -.05
+    return percent_adj
+
+# Create a function that randomly determines the outcome of choosing partners in 3 group assignments
+def group_assign(hist, num_g_assign, lower_score):
     """Predict the grade for the student's grades on the group assignments
     :param num_g_assign: Total number of group assignments
     :param lower_score: Given the history of the student, the lower_score predicts a lower bound for quiz grades
     """
+    percent_counter = 0
+    total_points = 0
 
-    # They should have an advantage based on their prior experience and the other students will be completely random
+    for hw in range(num_g_assign):
+        percent_counter += choose_partner(hist)
+        raw_score = random.uniform(lower_score, 100)
+        total_points += ((raw_score * percent_counter) + raw_score)
+    total_points = (total_points/num_g_assign)/100
+
+    return total_points
 
 
 # Create a function that randomly determines the outcome of indiviudal assignments
@@ -104,6 +139,7 @@ def partner_generator(hist):
         :param hist: A students prior history with coding
         :return percent_adj: The percent adjustment based on partner skill
         """
+    percent_adj = 0
     if hist == 'beginner':
         position = 1
     if hist == 'intermediate':
@@ -118,37 +154,35 @@ def partner_generator(hist):
 
     # if partner is matching your skill level
     if partner_position - position == 0 and position == 1:
-        percent_adj = -.10
+        percent_adj += -.10
     if partner_position - position == 0 and position == 2:
-        percent_adj = -.05
+        percent_adj += -.05
     if partner_position - position == 0 and position == 3:
-        percent_adj = -.02
+        percent_adj += -.02
     if partner_position - position == 0 and position == 4:
-        percent_adj = 0
+        percent_adj += 0
 
     # if partner is above your skill level
     if partner_position - position == 1:
-        percent_adj = .05
+        percent_adj += .05
     if partner_position - position == 2:
-        percent_adj = .10
+        percent_adj += .10
     if partner_position - position == 3:
-        percent_adj = .15
+        percent_adj += .15
 
     # if partner is below your skill level
     if partner_position - position == -1:
-        percent_adj = -.05
+        percent_adj += -.05
     if partner_position - position == -2:
-        percent_adj = -.10
+        percent_adj += -.10
     if partner_position - position == -3:
-        percent_adj = -.15
-
+        percent_adj += -.15
     return percent_adj
 
 
-def random_partner(hist, percent_adj, lower_score):
+def random_partner(hist, lower_score):
     """Determine the advantage or disadvantage a student has when randomly paired with other students
         :param hist: A students prior history with coding
-        :param percent_adj: The percent adjustment based on partner skill
         :param lower_score: The lower bounded score for assignments based on a student's history
         :return total_points: The score on the assignment when randomly paired with partners
         """
@@ -161,27 +195,32 @@ def random_partner(hist, percent_adj, lower_score):
         percent_counter += partner_generator(hist)
 
     adjustment = percent_counter / number_partners
-
-    total_points = ((lower_score * adjustment) + lower_score) / 100
+    raw_score = random.uniform(lower_score, 100)
+    total_points = ((raw_score * adjustment) + raw_score) / 100
 
     return total_points
 
 
 # Create a function that randomly determines the final project grade
-def final_proj(lower_score):
+def final_proj(hist, lower_score):
     """Predict the grade for the student's final project
+    :param hist: A students prior history with coding
     :param lower_score: Given the history of the student, the lower_score predicts a lower bound for quiz grades
+    :return final_proj_grade; Final project grade
     """
-    # odds = random.randint(1, 2)
-    # if odds == 1: # You have decided to choose a partner
-    #     pritn('ha')# will add partner function here
-    # elif odds == 2: # You have decided to work alone
-    #     final_proj_grade = random.uniform(lower_score, 100)
-    # return final_proj_grade
+    odds = random.randint(1, 2)
+    if odds == 1: # You have decided to choose a partner
+        percent = choose_partner(hist)
+        raw_score = random.uniform(lower_score, 100)
+        final_proj_grade = ((raw_score * percent) + raw_score) / 100
+    elif odds == 2: # You have decided to work alone
+        raw_score = random.uniform(lower_score, 100)
+        final_proj_grade = raw_score / 100
+    return final_proj_grade
 
 
 # Create a function that adds all the grades up into one for a final probability
-def grade(part_points, quiz_points, ind_points, rand_group_points): # add parameters for the group/ind assignments and final
+def grade(part_points, quiz_points, ind_points, rand_group_points, group_points, final_points): # add parameters for the group/ind assignments and final
     """Use all of the following information and the weight of each grade to determine the final grade
         for the student in this course. Will they pass the course?
     :param part_points: The total participation points calculated
@@ -192,10 +231,10 @@ def grade(part_points, quiz_points, ind_points, rand_group_points): # add parame
     final_quizzes = quiz_points * .15
     final_ind_assign = ind_points * .2763  # (10.53% per assignment (3) and 5.25% for the first ind assignment) * 75
     final_rand_points = rand_group_points * .078975
-    # final_group_points = group_points * .236925  # (10.53% per assignment (4) * 75
-    # final_assign = final_points * .1578  # (10.53% * 2 for the 2/1 weight per assignment) * 75
+    final_group_points = group_points * .236925  # (10.53% per assignment (4) * 75
+    final_assign = final_points * .1578  # (10.53% * 2 for the 2/1 weight per assignment) * 75
 
-    total_points = final_participation + final_quizzes + final_ind_assign + final_rand_points# + final_assign
+    total_points = final_participation + final_quizzes + final_ind_assign + final_rand_points + final_group_points + final_assign
     total_points = round(total_points * 100, 2)
 
     # if 100 <= total_points >= 93:
@@ -221,7 +260,7 @@ def grade(part_points, quiz_points, ind_points, rand_group_points): # add parame
     return total_points
 
 
-def run_program(hist):
+def run_program(hist, grade_list):
     """Use this function to run all of the previous functions in the program.
     :param hist: A students prior history with coding
     :return stats: Statistics on each run that we are producing.
@@ -233,14 +272,14 @@ def run_program(hist):
 
     assign_range = assignment_range(hist)
     total_ind = ind_assign(4, assign_range)
-    percent_adj = partner_generator(hist)
-    total_rand_group = random_partner(hist, percent_adj, assign_range)
-    print(total_rand_group)
-    # total_final = final_proj(assign_range)
+    total_rand_group = random_partner(hist, assign_range)
+    total_group = group_assign(hist, 3, assign_range)
+    total_final = final_proj(hist, assign_range)
 
-    grade_percent = float(grade(total_part, total_quiz, total_ind, total_rand_group))
+    grade_percent = float(grade(total_part, total_quiz, total_ind, total_rand_group, total_group, total_final))
 
     grade_list.append(grade_percent)
+    return grade_list
 
 
 def analyze_students(num_exp, num_adv, num_int, num_beg):
@@ -250,32 +289,67 @@ def analyze_students(num_exp, num_adv, num_int, num_beg):
     :param num_int: Total number of intermediate students
     :param num_beg: Total number of beginner students
     """
+    grade_list = []
+
     for tests in range(num_exp):
-        run_program('expert')
+        run_program('expert', grade_list)
     for tests in range(num_adv):
-        run_program('advanced')
+        run_program('advanced', grade_list)
     for tests in range(num_int):
-        run_program('intermediate')
+        run_program('intermediate', grade_list)
     for tests in range(num_beg):
-        run_program('beginner')
+        run_program('beginner', grade_list)
+    return grade_list
+
+
+def dict(analyze_cat):
+    analyze_dict = {}
+    keys = range(100)
+    for i in keys:
+        analyze_dict[i] = analyze_cat[i]
+    return analyze_dict
 
 
 def graph(grade_dict):
     """Create a graph based on the number of times we analyze the students and their total grades.
     :param grade_dict: A dictionary filled with the grades and number of times the program is run.
     """
-    keys = range(100)
-    for i in keys:
-        grade_dict[i] = grade_list[i]
-    print(grade_dict)
-    lists = sorted(grade_dict.items())
+    dictionary = dict(grade_dict)
+    lists = sorted(dictionary.items())
     x, y = zip(*lists)
 
     plt.plot(x, y)
     plt.show()
 
 
+def dataframe(dictionary):
+    df = pd.DataFrame.from_dict(dictionary, orient='index')
+    return df
 
-analyze_students(100, 0, 0, 0)
-graph(grade_dict)
+
+expert = analyze_students(100, 0, 0, 0)
+advanced = analyze_students(0, 100, 0, 0)
+intermediate = analyze_students(0, 0, 100, 0)
+beginner = analyze_students(0, 0, 0, 100)
+
+a = dict(expert)
+b = dict(advanced)
+c = dict(intermediate)
+d = dict(beginner)
+
+# exp_graph = graph(a)
+# adv_graph = graph(b)
+# int_graph = graph(c)
+# beg_graph = graph(d)
+
+exp_df = dataframe(a)
+adv_df = dataframe(b)
+int_df = dataframe(c)
+beg_df = dataframe(d)
+
+first_merge = pd.merge(exp_df, adv_df, left_index=True, right_index=True)
+second_merge = pd.merge(first_merge, int_df, left_index=True, right_index=True)
+last = pd.merge(second_merge, beg_df, left_index=True, right_index=True)
+last.columns = ['expert', 'advanced', 'intermediate', 'beginner']
+print(last.describe())
 
