@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 
 # hist = input("Describe your level of experience with Python (beginner, intermediate, advanced, expert): ")
 # hist = 'expert'
-grade_list = {}
+grade_list = []
+grade_dict = {}
+count = 0
 
 def quiz_range(hist):
     """Determine the advantage a student has for the success in the course
@@ -121,30 +123,30 @@ def grade(hist, part_points, quiz_points, ind_points): # add parameters for the 
     total_points = final_participation + final_quizzes + final_ind_assign # + final_assign
     total_points = round(total_points * 100, 2)
 
-    if 100 <= total_points >= 93:
-        print("As a/an {}, your final grade is an A, and you have passed the course.".format(hist))
-    elif 92.9 <= total_points >= 90:
-        print("As a/an {}, your final grade is an A-, and you have passed the course.".format(hist))
-    elif 89.9 <= total_points >=87:
-        print("As a/an {}, your final grade is a B+, and you have passed the course.".format(hist))
-    elif 86.9 <= total_points >= 83:
-        print("As a/an {}, your final grade is a B, and you have passed the course.".format(hist))
-    elif 82.9 <= total_points >= 80:
-        print("As a/an {}, your final grade is a B-, and you have passed the course.".format(hist))
-    elif 79.9 <= total_points >= 77:
-        print("As a/an {}, your final grade is a C+, and you have passed the course.".format(hist))
-    elif 76.9 <= total_points >= 73:
-        print("As a/an {}, your final grade is a C, and you have passed the course.".format(hist))
-    elif 72.9 <= total_points >= 70:
-        print("As a/an {}, your final grade is a C-, and you have passed the course.".format(hist))
-    elif 69.9 <= total_points >= 65:
-        print("As a/an {}, your final grade is a D, and you have NOT passed the course.".format(hist))
-    elif total_points <= 65:
-        print("As a/an {}, your final grade is an F, and you have NOT passed the course.".format(hist))
+    # if 100 <= total_points >= 93:
+    #     print("As a/an {}, your final grade is an A, and you have passed the course.".format(hist))
+    # elif 92.9 <= total_points >= 90:
+    #     print("As a/an {}, your final grade is an A-, and you have passed the course.".format(hist))
+    # elif 89.9 <= total_points >=87:
+    #     print("As a/an {}, your final grade is a B+, and you have passed the course.".format(hist))
+    # elif 86.9 <= total_points >= 83:
+    #     print("As a/an {}, your final grade is a B, and you have passed the course.".format(hist))
+    # elif 82.9 <= total_points >= 80:
+    #     print("As a/an {}, your final grade is a B-, and you have passed the course.".format(hist))
+    # elif 79.9 <= total_points >= 77:
+    #     print("As a/an {}, your final grade is a C+, and you have passed the course.".format(hist))
+    # elif 76.9 <= total_points >= 73:
+    #     print("As a/an {}, your final grade is a C, and you have passed the course.".format(hist))
+    # elif 72.9 <= total_points >= 70:
+    #     print("As a/an {}, your final grade is a C-, and you have passed the course.".format(hist))
+    # elif 69.9 <= total_points >= 65:
+    #     print("As a/an {}, your final grade is a D, and you have NOT passed the course.".format(hist))
+    # elif total_points <= 65:
+    #     print("As a/an {}, your final grade is an F, and you have NOT passed the course.".format(hist))
     return total_points
 
 
-def run_program(hist):
+def run_program(hist, count):
     """Use this function to run all of the previous functions in the program.
     :param hist: A students prior history with coding
     :return stats: Statistics on each run that we are producing.
@@ -158,26 +160,44 @@ def run_program(hist):
     ind_points = ind_assign(4, assign_range)
 
     grade_percent = float(grade(hist, total_part, total_quiz, ind_points))
-    grade_list.update({hist:grade_percent}) # Here I am trying to create a dictionary that has the hist as keys and then it will save each grade run as values
+
+    grade_list.append(grade_percent)
 
 
 def analyze_students(num_exp, num_adv, num_int, num_beg):
+    """Run the program as many times as needed to get the desired results.
+    :param num_exp: Total number of expert students
+    :param num_adv: Total number of advanced students
+    :param num_int: Total number of intermediate students
+    :param num_beg: Total number of beginner students
+    """
     for tests in range(num_exp):
-        run_program('expert')
+        run_program('expert', count)
     for tests in range(num_adv):
-        run_program('advanced')
+        run_program('advanced', count)
     for tests in range(num_int):
-        run_program('intermediate')
+        run_program('intermediate', count)
     for tests in range(num_beg):
-        run_program('beginner')
+        run_program('beginner', count)
 
-# for x in range(3):
-#     run_program(hist)
-analyze_students(3, 7, 12, 18)
-print(grade_list)
 
-# If we run our test 100 times for an expert, and get an average grade, how will be do statistics on that expert?
-# Should we put together a 'fake class' of 3 experts, 7 advanced, 12 intermediate, and 18 beginner?
-# We could then analyze our class to determine the probability of passing?
+def graph(grade_dict):
+    """Create a graph based on the number of times we analyze the students and their total grades.
+    :param grade_dict: A dictionary filled with the grades and number of times the program is run.
+    """
+    keys = range(100)
+    for i in keys:
+        grade_dict[i] = grade_list[i]
 
-# Counts vs passing grade
+
+
+    lists = sorted(grade_dict.items())
+    x, y = zip(*lists)
+
+    plt.plot(x, y)
+    plt.show()
+
+
+analyze_students(100, 0, 0, 0)
+graph(grade_dict)
+
