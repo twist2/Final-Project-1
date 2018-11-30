@@ -16,23 +16,36 @@ Given several aspects of a student's history with programming as well as how the
    
    - Expert: between 80 and 100 for quizzes, and between 85 and 100 for assignments
 
-* Reading advantage: Doing the assigned readings gives you between 0%-20% advantage on quizzes
+* Quizzes: There are 9 quizzes total. There are two attempts for each quiz. The second attempt will be greater than or equal to your first attempt. Both attempts are averaged into a single score.
 
-* Group assignments: In group assignments, the familiarity your group members have with programming.
+* Reading advantage: Doing the assigned readings gives you between 0-20% advantage on quizzes
+
+* Group assignments: In group assignments, your score range is adjusted by your group members' familiarity with programming.
   * 2 scenarios: either the ability to pick your partner, or being randomly assigned a partner
 
-    **_Choose partner_**: match with someone of equal skill or within one level of you. If matching in skill set, no advantage. Disadvantage of 0% for expert, 2% for advanced, 5% for intermediate, 10% for beginner. If partners have different skills, take average of disadvantage. [Potential idea: Advantage as a range that could cancel out disadvantage if partners work very well together]
+    **_Choose partner_**: match with someone of equal skill or within one level of you.
+    
+    * If matching in skill set, no advantage:
+    
+         - Expert matching with expert has a disadvantage of 0%
+         - Advanced matching with advanced has a disadvantage of 2%
+         - Intermediate matching with intermediate has a disadvantage of 5%
+         - Beginner matching with beginner has a disadvantage of 10%
+    
+    * If partner has higher skills than you, you have an advantage of 5%
+    
+    * If you have higher skills than your partner, you have a disadvantage of 5%
 
-    **_Randomly assigned partner_**: varying skillset. The idea here is that as a student with less familiarity with programming, you will have a greater change of receiving more points on your assingnment when your partner(s) is at a higher skill than you are. However, if you have more familiarity with programming, you are the greatest disadvantage when you do not have a lot of programming experience and your partner has even less experience. If you have a lot more experience than your partner, this is only a minor disadvantage because you are capable of doing most of the work yourself. The total advantage or disadvantage is averaged based total group members. 
+    **_Randomly assigned partner_**: varying skillset. The idea here is that as a student with less familiarity with programming, you will have a greater change of receiving more points on your assingnment when your partner is at a higher skill than you are. However, if you have more familiarity with programming, you are the greatest disadvantage when you do not have a lot of programming experience and your partner has even less experience. If you have a lot more experience than your partner, this is only a minor disadvantage because you are capable of doing most of the work yourself. The total advantage or disadvantage is averaged based total group members. 
     
-    -If 1 skillset above, advantage 5%; below, disadvantage 15%
-    
-    -If 2 skillsets above, advantage 10%; below, disadvantage 10%
-    
-    -If 3 skillsets above, advantage 15%; below, disadvantage 5%
+    * If 1 skillset above, advantage 5%; below, disadvantage 15%
+    * If 2 skillsets above, advantage 10%; below, disadvantage 10%
+    * If 3 skillsets above, advantage 15%; below, disadvantage 5%
         
   * Groups numbers (1-3)
-  
+
+* Assignments: There are 9 total assignments in the class. Four are individual, four are group projects, and one is a final assignment. Of the group projects, 3 allow for choosing a partner, and in one groups are randomly assigned.
+
 * Student Participation: A completely random variable based on the total number of classes. 
 
 ## Hypothesis or hypotheses before running the simulation:
