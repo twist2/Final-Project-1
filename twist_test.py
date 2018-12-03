@@ -27,15 +27,19 @@ def quizzes(num_quiz, first_score):
     num_quiz_range = num_quiz + 1
     quiz_list = []
     for quizzes in range(1, num_quiz_range):
+        complete_quiz = random.randint(0, 1)
         reading_adv = random.uniform(0, .2)
-        quiz_raw = random.uniform(first_score, 100)
-        quiz_1 = (quiz_raw * reading_adv) + quiz_raw
-        if quiz_1 >= 100:
-            quiz_grade = 100
-        elif quiz_1 < 100:
-            quiz_2 = random.uniform(quiz_1, 100)
-            quiz_grade = (quiz_1 + quiz_2) / 2
-        quiz_list.append(quiz_grade)
+        if complete_quiz == 0:
+            quiz_list.append(0)
+        elif complete_quiz == 1:
+            quiz_raw = random.uniform(first_score, 100)
+            quiz_1 = (quiz_raw * reading_adv) + quiz_raw
+            if quiz_1 >= 100:
+                quiz_grade = 100
+            elif quiz_1 < 100:
+                quiz_2 = random.uniform(quiz_1, 100)
+                quiz_grade = (quiz_1 + quiz_2) / 2
+            quiz_list.append(quiz_grade)
     final_quiz_grade = (sum(quiz_list)/num_quiz)/100
     return final_quiz_grade
 
@@ -302,45 +306,53 @@ def analyze_students(num_exp, num_adv, num_int, num_beg):
     return grade_list
 
 
-def dict(analyze_cat):
+def dict(analyze_cat, num_students):
     analyze_dict = {}
-    keys = range(100)
+    keys = range(num_students)
     for i in keys:
         analyze_dict[i] = analyze_cat[i]
     return analyze_dict
 
 
-def graph(grade_dict):
+def graph(grade_dict, num_students, hist):
     """Create a graph based on the number of times we analyze the students and their total grades.
     :param grade_dict: A dictionary filled with the grades and number of times the program is run.
     """
-    dictionary = dict(grade_dict)
+    dictionary = dict(grade_dict, num_students)
     lists = sorted(dictionary.items())
     x, y = zip(*lists)
 
     plt.plot(x, y)
+    plt.xlabel("Count")
+    plt.ylabel("Grade %")
+    plt.title(hist)
     plt.show()
 
 
 def dataframe(dictionary):
+    """Create a dataframe from the student analysis dictionary.
+    :param dictionary: Dictionary from the student analysis data.
+    """
     df = pd.DataFrame.from_dict(dictionary, orient='index')
     return df
 
 
-expert = analyze_students(100, 0, 0, 0)
-advanced = analyze_students(0, 100, 0, 0)
-intermediate = analyze_students(0, 0, 100, 0)
-beginner = analyze_students(0, 0, 0, 100)
+num_students = 100
 
-a = dict(expert)
-b = dict(advanced)
-c = dict(intermediate)
-d = dict(beginner)
+expert = analyze_students(num_students, 0, 0, 0)
+advanced = analyze_students(0, num_students, 0, 0)
+intermediate = analyze_students(0, 0, num_students, 0)
+beginner = analyze_students(0, 0, 0, num_students)
 
-# exp_graph = graph(a)
-# adv_graph = graph(b)
-# int_graph = graph(c)
-# beg_graph = graph(d)
+a = dict(expert, num_students)
+b = dict(advanced, num_students)
+c = dict(intermediate, num_students)
+d = dict(beginner, num_students)
+
+exp_graph = graph(a, num_students, 'Expert Programmer')
+adv_graph = graph(b, num_students, 'Advanced Programmer')
+int_graph = graph(c, num_students, 'Intermediate Programmer')
+beg_graph = graph(d, num_students, 'Beginner Programmer')
 
 exp_df = dataframe(a)
 adv_df = dataframe(b)
