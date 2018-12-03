@@ -50,10 +50,13 @@ Given several aspects of a student's history with programming as well as how the
 * Student Participation: A completely random variable based on the total number of classes. Particiaption counts for 10% of the final grade.
 
 ## Hypothesis or hypotheses before running the simulation:
-Students who have had prior experience coding in Python will me more likely to pass the course with a higher grade than those who came in with little experience. 
+Students who have had prior experience coding in Python will be more likely to pass the course with a higher grade than those who came in with little experience. 
 
 ## Analytical Summary of your findings: (e.g. Did you adjust the scenario based on previous simulation outcomes?  What are the management decisions one could make from your simulation's output, etc.)
 
 ## Instructions on how to use the program:
 
+
 ## All Sources Used:
+IS590PR Syllabus - https://courses.ischool.illinois.edu/pluginfile.php/369122/mod_resource/content/1/Syllabus.%20IS590PR%20Fall%202018.pdf
+
