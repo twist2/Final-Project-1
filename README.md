@@ -16,7 +16,7 @@ Given several aspects of a student's history with programming as well as how the
    
    - Expert: between 80 and 100 for quizzes, and between 85 and 100 for assignments
 
-* Quizzes: There are 9 quizzes total. There are two attempts for each quiz. The second attempt will be greater than or equal to your first attempt. Both attempts are averaged into a single score.
+* Quizzes: There are 9 quizzes total. There are two attempts for each quiz. The second attempt will be greater than or equal to your first attempt. Both attempts are averaged into a single score. Quizzes account for 15% of the final grade. 
 
 * Reading advantage: Doing the assigned readings gives you between 0-20% advantage on quizzes
 
@@ -45,8 +45,9 @@ Given several aspects of a student's history with programming as well as how the
   * Groups numbers (1-3)
 
 * Assignments: There are 9 total assignments in the class. Four are individual, four are group projects, and one is a final assignment. Of the group projects, 3 allow for choosing a partner, and in one groups are randomly assigned.
+   * The assignments weights are split as follows, .5 for one individual assignment, 1 each for the 3 additional individual assignments,     1 for the randomized group assignment, 1 each for the chosen group assignments and 2 for the final project. Assignments are worth       75% of the overall final grade. 
 
-* Student Participation: A completely random variable based on the total number of classes. 
+* Student Participation: A completely random variable based on the total number of classes. Particiaption counts for 10% of the final grade.
 
 ## Hypothesis or hypotheses before running the simulation:
 Students who have had prior experience coding in Python will me more likely to pass the course with a higher grade than those who came in with little experience. 
