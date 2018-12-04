@@ -6,7 +6,7 @@
 Given several aspects of a student's history with programming as well as how the course work is graded, we will use this simulation to predict the grade outcome for a given student. We will be using the syllabus for this course, the randomness from group assignments, and the grader's scale to determine how well a student will do in this course. 
 
 ## Simulation's variables of uncertainty
-* Familiarity with programming: On a scale of 50 to 100, where 50 to 64 is a beginner, 65 to 79 is intermediate, 80 to 94 is advanced, and 95 to 100 is expert. This assumes that since 590PR requires some prerequisite for entry, all students enter with some fundamental skills.
+* Familiarity with programming: expert, advanced, intermediate and beginner. This assumes that since 590PR requires some prerequisite for entry, all students enter with some fundamental skills.
    
    - Beginner: between 0 and 100 for quizzes, and between 40 and 100 for assignments
    
@@ -16,9 +16,9 @@ Given several aspects of a student's history with programming as well as how the
    
    - Expert: between 80 and 100 for quizzes, and between 85 and 100 for assignments
 
-* Quizzes: There are 9 quizzes total. There are two attempts for each quiz. The second attempt will be greater than or equal to your first attempt. Both attempts are averaged into a single score. Quizzes account for 15% of the final grade. 
+* Quizzes: There are 8 quizzes total. There are two attempts for each quiz. The second attempt will be greater than or equal to your first attempt. Both attempts are averaged into a single score. The probability of completing the quiz on time is 9 out of 10. Quizzes account for 15% of the final grade. 
 
-* Reading advantage: Doing the assigned readings gives you between 0-20% advantage on quizzes
+* Reading advantage: Doing the assigned readings gives you between 20-50% advantage on quizzes
 
 * Group assignments: In group assignments, your score range is adjusted by your group members' familiarity with programming.
   * 2 scenarios: either the ability to pick your partner, or being randomly assigned a partner
@@ -47,7 +47,7 @@ Given several aspects of a student's history with programming as well as how the
 * Assignments: There are 9 total assignments in the class. Four are individual, four are group projects, and one is a final assignment. Of the group projects, 3 allow for choosing a partner, and in one groups are randomly assigned.
    * The assignments weights are split as follows, .5 for one individual assignment, 1 each for the 3 additional individual assignments,     1 for the randomized group assignment, 1 each for the chosen group assignments and 2 for the final project. Assignments are worth       75% of the overall final grade. 
 
-* Student Participation: A completely random variable based on the total number of classes. Particiaption counts for 10% of the final grade.
+* Student Participation: A completely random variable based on the total number of classes. The probability of showing up to lecture is 9 out of 10. Particiaption counts for 10% of the final grade.
 
 ## Hypothesis or hypotheses before running the simulation:
 Students who have had prior experience coding in Python will be more likely to pass the course with a higher grade than those who came in with little experience. 
