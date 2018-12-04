@@ -24,14 +24,13 @@ def quizzes(num_quiz, first_score):
     :param num_quiz: Total number of quizzes in the course
     :param first_score: Given the history of the student, the first_score predicts a lower bound for quiz grades
     """
-    num_quiz_range = num_quiz + 1
     quiz_list = []
-    for quizzes in range(1, num_quiz_range):
-        complete_quiz = random.randint(0, 1)
-        reading_adv = random.uniform(0, .2)
+    for quizzes in range(num_quiz):
+        complete_quiz = random.randint(0, 10)
+        reading_adv = random.uniform(.2, .5)
         if complete_quiz == 0:
             quiz_list.append(0)
-        elif complete_quiz == 1:
+        elif complete_quiz > 0:
             quiz_raw = random.uniform(first_score, 100)
             quiz_1 = (quiz_raw * reading_adv) + quiz_raw
             if quiz_1 >= 100:
@@ -64,12 +63,18 @@ def participation(num_classes):
     """Predict the grade for the students total participation in class
     :param num_classes: Total number of classes to participate in
     """
-    part_total = 0
+    part_total = []
     for classes in range(num_classes):
-        part = random.uniform(0, 10)
-        part_total += part
-    part_total = part_total/(num_classes * 10)
-    return part_total
+        attendence = random.randint(0, 10)
+        if attendence == 0:
+            part_total.append(attendence)
+        else:
+            points = 10
+            part = random.uniform(0, 5)
+            points = points + part
+            part_total.append(points)
+    part_points = sum(part_total)/(num_classes * 15)
+    return part_points
 
 
 def choose_partner(hist):  # Create a function to choose a partner at random
@@ -213,11 +218,13 @@ def final_proj(hist, lower_score):
     :return final_proj_grade; Final project grade
     """
     odds = random.randint(1, 2)
-    if odds == 1: # You have decided to choose a partner
+    if odds == 1:  # You have decided to choose a partner
         percent = choose_partner(hist)
         raw_score = random.uniform(lower_score, 100)
         final_proj_grade = ((raw_score * percent) + raw_score) / 100
-    elif odds == 2: # You have decided to work alone
+        if final_proj_grade > 100:
+            final_proj_grade = 100
+    elif odds == 2:  # You have decided to work alone
         raw_score = random.uniform(lower_score, 100)
         final_proj_grade = raw_score / 100
     return final_proj_grade
@@ -272,13 +279,15 @@ def run_program(hist, grade_list):
     """
     first_score = int(quiz_range(hist))
     total_quiz = quizzes(8, first_score)
-    total_part = participation(16)
+    total_part = participation(14)
 
     assign_range = assignment_range(hist)
     total_ind = ind_assign(4, assign_range)
     total_rand_group = random_partner(hist, assign_range)
     total_group = group_assign(hist, 3, assign_range)
     total_final = final_proj(hist, assign_range)
+
+    # print(hist, "hist", total_quiz, "quiz", total_part, "participation", total_ind, "individual", total_rand_group, "random group", total_group, "group assign", total_final, "final Project")
 
     grade_percent = float(grade(total_part, total_quiz, total_ind, total_rand_group, total_group, total_final))
 
