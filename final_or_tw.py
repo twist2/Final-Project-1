@@ -124,6 +124,57 @@ def participation(num_classes):
     return total_part_grade
 
 
+def participation_boost(grade):
+    """Predict the grade for the students total participation in class
+    :param grade: Current total of all assignments, before participation boost
+    :return total_with_part: Returns the total, including the participation boost
+    """
+    participation_effort = random.randint(0, 2)
+    if participation_effort == 0:
+        total_with_part = grade
+    if participation_effort == 1:
+        diff = 100 - grade
+        if 0 < diff <= 7:  # if at 90-92.9
+            total_with_part = grade
+        elif 7 < diff <= 10:  # if at 87-89.9
+            total_with_part = 93
+        elif 10 < diff <= 13:  # if at 83-86.9
+            total_with_part = 90
+        elif 13 < diff <= 17:  # if at 80-82.9
+            total_with_part = 87
+        elif 17 < diff <= 20:  # if at 77-79.9
+            total_with_part = 84
+        elif 20 < diff <= 23:  # if at 73-76.9
+            total_with_part = 80
+        elif 23 < diff <= 27:  # if at 70-72.9
+            total_with_part = 77
+        elif 27 < diff <= 30:  # if at 65-69.9
+            total_with_part = 73
+        elif 30 < diff <= 35:  # if at 60-64.9
+            total_with_part = 70
+    if participation_effort == 2:
+        diff = 100 - grade
+        if 0 < diff <= 7:  # if at 90-92.9
+            total_with_part = grade
+        elif 7 < diff <= 10:  # if at 87-89.9
+            total_with_part = 93
+        elif 10 < diff <= 13:  # if at 83-86.9
+            total_with_part = 90
+        elif 13 < diff <= 17:  # if at 80-82.9
+            total_with_part = 87
+        elif 17 < diff <= 20:  # if at 77-79.9
+            total_with_part = 83
+        elif 20 < diff <= 23:  # if at 73-76.9
+            total_with_part = 80
+        elif 23 < diff <= 27:  # if at 70-72.9
+            total_with_part = 77
+        elif 27 < diff <= 30:  # if at 65-69.9
+            total_with_part = 73
+        elif 33 < diff <= 35:  # if at 60-64.9
+            total_with_part = 70
+    return total_with_part
+
+
 def choose_partner(hist):  # Create a function to choose a partner at random
     if hist == 'beginner':
         position = 1
@@ -295,8 +346,10 @@ def grade(part_points, quiz_points, ind_points, rand_group_points, group_points,
     final_group_points = group_points * .236925  # (10.53% per assignment (4) * 75
     final_assign = final_points * .1578  # (10.53% * 2 for the 2/1 weight per assignment) * 75
 
-    total_points = final_participation + final_quizzes + final_ind_assign + final_rand_points + final_group_points + final_assign
-    total_points = round(total_points * 100, 2)
+    points = final_quizzes + final_ind_assign + final_rand_points + final_group_points + final_assign + final_participation
+    points = round(points * 100, 2)
+    print(points, 100-points)
+    total_points = participation_boost(points)
     return total_points
 
 
@@ -320,7 +373,6 @@ def run_program(hist, grade_list):
     # print(hist, "hist", total_quiz, "quiz", total_part, "participation", total_ind, "individual", total_rand_group, "random group", total_group, "group assign", total_final, "final Project")
 
     grade_percent = float(grade(total_part, total_quiz, total_ind, total_rand_group, total_group, total_final))
-
     grade_list.append(grade_percent)
     return grade_list
 
@@ -382,7 +434,7 @@ def dataframe(dictionary):
     return df
 
 
-num_students = 1000
+num_students = 100
 
 expert = analyze_students(num_students, 0, 0, 0)
 advanced = analyze_students(0, num_students, 0, 0)
@@ -409,4 +461,3 @@ second_merge = pd.merge(first_merge, int_df, left_index=True, right_index=True)
 last = pd.merge(second_merge, beg_df, left_index=True, right_index=True)
 last.columns = ['expert', 'advanced', 'intermediate', 'beginner']
 print(last.describe())
-
