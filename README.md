@@ -50,12 +50,12 @@ Given several aspects of a student's history with programming as well as how the
 * Student Participation: A completely random variable based on the total number of classes. The probability of showing up to lecture is 9 out of 10. Particiaption counts for 10% of the final grade.
 
 ## Hypothesis or hypotheses before running the simulation:
-Students who have had prior experience coding in Python will be more likely to pass the course with a higher grade than those who came in with little experience. 
+Students who have had prior experience coding in Python will be more likely to pass the course with a higher grade than those who came in with little experience. Those who also put in more effort in the course, will recieve a higher grade. 
 
 ## Analytical Summary of your findings: (e.g. Did you adjust the scenario based on previous simulation outcomes?  What are the management decisions one could make from your simulation's output, etc.)
 
 ## Instructions on how to use the program:
-
+To run this simulation, open up the final_or_tw.py file in a Python compatable system. Next, run the program and you will be prompted to insert a number of students that you would like to analyze/how many times you want to run the program for. The program will save each graph for an expert, advanced, intermediate and beginner programmer to a separate file as well as the overall analysis to a separate csv file. 
 
 ## All Sources Used:
 IS590PR Syllabus - https://courses.ischool.illinois.edu/pluginfile.php/369122/mod_resource/content/1/Syllabus.%20IS590PR%20Fall%202018.pdf
