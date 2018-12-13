@@ -446,7 +446,7 @@ def dict(analyze_cat, num_students):
     return analyze_dict
 
 
-def graph(grade_dict, num_students, hist):
+def graph(grade_dict, num_students, hist, effort):
     """Create a graph based on the number of times we analyze the students and their total grades.
     :param grade_dict: A dictionary filled with the grades and number of times the program is run
     :param num_students: The total number of students than were ran in the program
@@ -460,7 +460,8 @@ def graph(grade_dict, num_students, hist):
     plt.xlabel("Count")
     plt.ylabel("Grade %")
     plt.title(hist)
-    plt.show()
+    plt.savefig('{}_{}.pdf'.format(hist, num_students))  # save the figure to file
+    plt.close()
 
 
 def dataframe(dictionary):
@@ -502,21 +503,21 @@ d_0 = dict(beginner_0, num_students)
 d_1 = dict(beginner_1, num_students)
 d_2 = dict(beginner_2, num_students)
 
-exp_graph_0 = graph(a_0, num_students, 'Expert Programmer with 0 Effort')
-exp_graph_1 = graph(a_1, num_students, 'Expert Programmer with 1 Effort')
-exp_graph_2 = graph(a_2, num_students, 'Expert Programmer with 1 Effort')
+exp_graph_0 = graph(a_0, num_students, 'Expert Programmer with 0 Effort', 0)
+exp_graph_1 = graph(a_1, num_students, 'Expert Programmer with 1 Effort', 1)
+exp_graph_2 = graph(a_2, num_students, 'Expert Programmer with 1 Effort', 2)
 
-adv_graph_0 = graph(b_0, num_students, 'Advanced Programmer with 0 Effort')
-adv_graph_1 = graph(b_1, num_students, 'Advanced Programmer with 1 Effort')
-adv_graph_2 = graph(b_2, num_students, 'Advanced Programmer with 2 Effort')
+adv_graph_0 = graph(b_0, num_students, 'Advanced Programmer with 0 Effort', 0)
+adv_graph_1 = graph(b_1, num_students, 'Advanced Programmer with 1 Effort', 1)
+adv_graph_2 = graph(b_2, num_students, 'Advanced Programmer with 2 Effort', 2)
 
-int_graph_0 = graph(c_0, num_students, 'Intermediate Programmer with 0 Effort')
-int_graph_1 = graph(c_1, num_students, 'Intermediate Programmer with 1 Effort')
-int_graph_2 = graph(c_2, num_students, 'Intermediate Programmer with 2 Effort')
+int_graph_0 = graph(c_0, num_students, 'Intermediate Programmer with 0 Effort', 0)
+int_graph_1 = graph(c_1, num_students, 'Intermediate Programmer with 1 Effort', 1)
+int_graph_2 = graph(c_2, num_students, 'Intermediate Programmer with 2 Effort', 2)
 
-beg_graph_0 = graph(d_0, num_students, 'Beginner Programmer with 0 Effort')
-beg_graph_1 = graph(d_1, num_students, 'Beginner Programmer with 1 Effort')
-beg_graph_2 = graph(d_2, num_students, 'Beginner Programmer with 2 Effort')
+beg_graph_0 = graph(d_0, num_students, 'Beginner Programmer with 0 Effort', 0)
+beg_graph_1 = graph(d_1, num_students, 'Beginner Programmer with 1 Effort', 1)
+beg_graph_2 = graph(d_2, num_students, 'Beginner Programmer with 2 Effort', 2)
 
 
 exp_df_0 = dataframe(a_0)
@@ -547,11 +548,18 @@ m8 = pd.merge(m7, beg_df_0, left_index=True, right_index=True)
 m9 = pd.merge(m8, beg_df_1, left_index=True, right_index=True)
 m10 = pd.merge(m9, beg_df_2, left_index=True, right_index=True)
 
-m10.columns = ['expert_effort_0', 'expert_effort_1', 'expert_effort_2',  'advanced_effort_0', 'advanced_effort_1',
+frames = [exp_df_0, exp_df_1, exp_df_2, adv_df_0, adv_df_1, adv_df_2, int_df_0 ,int_df_1, int_df_2,
+          beg_df_0, beg_df_1, beg_df_2]
+total = pd.concat(frames)
+
+m11 = pd.merge(m10, total, left_index=True, right_index=True)
+
+m11.columns = ['expert_effort_0', 'expert_effort_1', 'expert_effort_2',  'advanced_effort_0', 'advanced_effort_1',
                'advanced_effort_2', 'intermediate_effort_0', 'intermediate_effort_1', 'intermediate_effort_2',
-               'beginner_effort_0', 'beginner_effort_1', 'beginner_effort_2']
+               'beginner_effort_0', 'beginner_effort_1', 'beginner_effort_2', 'overall_distribution']
 
 
-print(m10.describe())
+m11.describe().to_csv('results_{}.csv'.format(num_students))
+
 
 
