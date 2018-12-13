@@ -37,30 +37,86 @@ def likely_range(hist):
     :return first_score: The lower bounded score for assignments based on a student's history
     """
     if hist == 'beginner':
-        likely = 75
-    if hist == 'intermediate':
         likely = 80
-    if hist == 'advanced':
+    if hist == 'intermediate':
         likely = 85
+    if hist == 'advanced':
+        likely = 90
     if hist == 'expert':
         likely = 95
     return likely
 
 
-def quiz_range(hist):
+def quiz_range(hist, effort):
     """Determine the advantage a student has for the success in the course
     :param hist: A students prior history with coding
     :return first_score: The lower bounded score for assignments based on a student's history
     """
     if hist == 'beginner':
-        first_score = 30
+        if effort == 0:
+            first_score = 30
+        elif effort == 1:
+            first_score = 50
+        elif effort == 2:
+            first_score = 70
     if hist == 'intermediate':
-        first_score = 55
+        if effort == 0:
+            first_score = 55
+        elif effort == 1:
+            first_score = 65
+        elif effort == 2:
+            first_score = 75
     if hist == 'advanced':
-        first_score = 70
+        if effort == 0:
+            first_score = 70
+        elif effort == 1:
+            first_score = 80
+        elif effort == 2:
+            first_score = 90
     if hist == 'expert':
-        first_score = 85
+        if effort == 0:
+            first_score = 85
+        elif effort == 1:
+            first_score = 90
+        elif effort == 2:
+            first_score = 95
     return first_score
+
+
+def assignment_range(hist, effort):
+    """Determine the advantage a student has for the success in the course
+        :param hist: A students prior history with coding
+        :return lower_score: The lower bounded score for assignments based on a student's history
+        """
+    if hist == 'beginner':
+        if effort == 0:
+            lower_score = 60
+        elif effort == 1:
+            lower_score = 70
+        elif effort == 2:
+            lower_score = 80
+    if hist == 'intermediate':
+        if effort == 0:
+            lower_score = 65
+        elif effort == 1:
+            lower_score = 75
+        elif effort == 2:
+            lower_score = 85
+    if hist == 'advanced':
+        if effort == 0:
+            lower_score = 70
+        elif effort == 1:
+            lower_score = 80
+        elif effort == 2:
+            lower_score = 90
+    if hist == 'expert':
+        if effort == 0:
+            lower_score = 75
+        elif effort == 1:
+            lower_score = 85
+        elif effort == 2:
+            lower_score = 95
+    return lower_score
 
 
 def quizzes(num_quiz, first_score, likely):
@@ -89,22 +145,6 @@ def quizzes(num_quiz, first_score, likely):
     return final_quiz_grade
 
 
-def assignment_range(hist):
-    """Determine the advantage a student has for the success in the course
-        :param hist: A students prior history with coding
-        :return lower_score: The lower bounded score for assignments based on a student's history
-        """
-    if hist == 'beginner':
-        lower_score = 60
-    if hist == 'intermediate':
-        lower_score = 70
-    if hist == 'advanced':
-        lower_score = 80
-    if hist == 'expert':
-        lower_score = 90
-    return lower_score
-
-
 def participation(num_classes):
     """Predict the grade for the students total participation in class
     :param num_classes: Total number of classes to participate in
@@ -112,7 +152,7 @@ def participation(num_classes):
     """
     part_total = []
     for classes in range(num_classes):
-        attendance = random.randint(0, 10) # I think this could stay the same as well
+        attendance = random.randint(0, 10)
         if attendance == 0:
             part_total.append(attendance)
         else:
@@ -134,11 +174,11 @@ def participation_boost(grade):
         total_with_part = grade
     if participation_effort == 1:
         diff = 100 - grade
-        if 0 < diff <= 7:  # if at 90-92.9
+        if 0 < diff <= 7:  # if at 93-100
             total_with_part = grade
-        elif 7 < diff <= 10:  # if at 87-89.9
+        elif 7 < diff <= 10:  # if at 90-92.9
             total_with_part = 93
-        elif 10 < diff <= 13:  # if at 83-86.9
+        elif 10 < diff <= 13:  # if at 87-89.9
             total_with_part = 90
         elif 13 < diff <= 17:  # if at 80-82.9
             total_with_part = 87
@@ -348,36 +388,33 @@ def grade(part_points, quiz_points, ind_points, rand_group_points, group_points,
 
     points = final_quizzes + final_ind_assign + final_rand_points + final_group_points + final_assign + final_participation
     points = round(points * 100, 2)
-    print(points, 100-points)
     total_points = participation_boost(points)
     return total_points
 
 
-def run_program(hist, grade_list):
+def run_program(hist, grade_list, effort):
     """Use this function to run all of the previous functions in the program.
     :param hist: A students prior history with coding
     :param grade_list: The list of grades for the number of students ran in the program
     :return stats: Statistics on each run that we are producing.
     """
-    first_score = quiz_range(hist)
+    first_score = quiz_range(hist, effort)
     likely = likely_range(hist)
     total_quiz = quizzes(8, first_score, likely)
     total_part = participation(14)
 
-    assign_range = assignment_range(hist)
+    assign_range = assignment_range(hist, effort)
     total_ind = ind_assign(4, assign_range, likely)
     total_rand_group = random_partner(hist, assign_range, likely)
     total_group = group_assign(hist, 3, assign_range, likely)
     total_final = final_proj(hist, assign_range, likely)
-
-    # print(hist, "hist", total_quiz, "quiz", total_part, "participation", total_ind, "individual", total_rand_group, "random group", total_group, "group assign", total_final, "final Project")
 
     grade_percent = float(grade(total_part, total_quiz, total_ind, total_rand_group, total_group, total_final))
     grade_list.append(grade_percent)
     return grade_list
 
 
-def analyze_students(num_exp, num_adv, num_int, num_beg):
+def analyze_students(num_exp, num_adv, num_int, num_beg, effort):
     """Run the program as many times as needed to get the desired results.
     :param num_exp: Total number of expert students
     :param num_adv: Total number of advanced students
@@ -387,13 +424,13 @@ def analyze_students(num_exp, num_adv, num_int, num_beg):
     grade_list = []
 
     for tests in range(num_exp):
-        run_program('expert', grade_list)
+        run_program('expert', grade_list, effort)
     for tests in range(num_adv):
-        run_program('advanced', grade_list)
+        run_program('advanced', grade_list, effort)
     for tests in range(num_int):
-        run_program('intermediate', grade_list)
+        run_program('intermediate', grade_list, effort)
     for tests in range(num_beg):
-        run_program('beginner', grade_list)
+        run_program('beginner', grade_list, effort)
     return grade_list
 
 
@@ -436,28 +473,85 @@ def dataframe(dictionary):
 
 num_students = 100
 
-expert = analyze_students(num_students, 0, 0, 0)
-advanced = analyze_students(0, num_students, 0, 0)
-intermediate = analyze_students(0, 0, num_students, 0)
-beginner = analyze_students(0, 0, 0, num_students)
+expert_0 = analyze_students(num_students, 0, 0, 0, effort=0)
+expert_1 = analyze_students(num_students, 0, 0, 0, effort=1)
+expert_2 = analyze_students(num_students, 0, 0, 0, effort=2)
 
-a = dict(expert, num_students)
-b = dict(advanced, num_students)
-c = dict(intermediate, num_students)
-d = dict(beginner, num_students)
+advanced_0 = analyze_students(0, num_students, 0, 0, effort=0)
+advanced_1 = analyze_students(0, num_students, 0, 0, effort=1)
+advanced_2 = analyze_students(0, num_students, 0, 0, effort=2)
 
-exp_graph = graph(a, num_students, 'Expert Programmer')
-adv_graph = graph(b, num_students, 'Advanced Programmer')
-int_graph = graph(c, num_students, 'Intermediate Programmer')
-beg_graph = graph(d, num_students, 'Beginner Programmer')
+intermediate_0 = analyze_students(0, 0, num_students, 0, effort=0)
+intermediate_1 = analyze_students(0, 0, num_students, 0, effort=1)
+intermediate_2 = analyze_students(0, 0, num_students, 0, effort=2)
 
-exp_df = dataframe(a)
-adv_df = dataframe(b)
-int_df = dataframe(c)
-beg_df = dataframe(d)
+beginner_0 = analyze_students(0, 0, 0, num_students, effort=0)
+beginner_1 = analyze_students(0, 0, 0, num_students, effort=1)
+beginner_2 = analyze_students(0, 0, 0, num_students, effort=2)
 
-first_merge = pd.merge(exp_df, adv_df, left_index=True, right_index=True)
-second_merge = pd.merge(first_merge, int_df, left_index=True, right_index=True)
-last = pd.merge(second_merge, beg_df, left_index=True, right_index=True)
-last.columns = ['expert', 'advanced', 'intermediate', 'beginner']
-print(last.describe())
+a_0 = dict(expert_0, num_students)
+a_1 = dict(expert_1, num_students)
+a_2 = dict(expert_2, num_students)
+b_0 = dict(advanced_0, num_students)
+b_1 = dict(advanced_1, num_students)
+b_2 = dict(advanced_2, num_students)
+c_0 = dict(intermediate_0, num_students)
+c_1 = dict(intermediate_1, num_students)
+c_2 = dict(intermediate_2, num_students)
+d_0 = dict(beginner_0, num_students)
+d_1 = dict(beginner_1, num_students)
+d_2 = dict(beginner_2, num_students)
+
+exp_graph_0 = graph(a_0, num_students, 'Expert Programmer with 0 Effort')
+exp_graph_1 = graph(a_1, num_students, 'Expert Programmer with 1 Effort')
+exp_graph_2 = graph(a_2, num_students, 'Expert Programmer with 1 Effort')
+
+adv_graph_0 = graph(b_0, num_students, 'Advanced Programmer with 0 Effort')
+adv_graph_1 = graph(b_1, num_students, 'Advanced Programmer with 1 Effort')
+adv_graph_2 = graph(b_2, num_students, 'Advanced Programmer with 2 Effort')
+
+int_graph_0 = graph(c_0, num_students, 'Intermediate Programmer with 0 Effort')
+int_graph_1 = graph(c_1, num_students, 'Intermediate Programmer with 1 Effort')
+int_graph_2 = graph(c_2, num_students, 'Intermediate Programmer with 2 Effort')
+
+beg_graph_0 = graph(d_0, num_students, 'Beginner Programmer with 0 Effort')
+beg_graph_1 = graph(d_1, num_students, 'Beginner Programmer with 1 Effort')
+beg_graph_2 = graph(d_2, num_students, 'Beginner Programmer with 2 Effort')
+
+
+exp_df_0 = dataframe(a_0)
+exp_df_1 = dataframe(a_1)
+exp_df_2 = dataframe(a_2)
+
+adv_df_0 = dataframe(b_0)
+adv_df_1 = dataframe(b_1)
+adv_df_2 = dataframe(b_2)
+
+int_df_0 = dataframe(c_0)
+int_df_1 = dataframe(c_1)
+int_df_2 = dataframe(c_2)
+
+beg_df_0 = dataframe(d_0)
+beg_df_1 = dataframe(d_1)
+beg_df_2 = dataframe(d_2)
+
+m0 = pd.merge(exp_df_0, exp_df_1, left_index=True, right_index=True)
+m1 = pd.merge(m0, exp_df_2, left_index=True, right_index=True)
+m2 = pd.merge(m1, adv_df_0, left_index=True, right_index=True)
+m3 = pd.merge(m2, adv_df_1, left_index=True, right_index=True)
+m4 = pd.merge(m3, adv_df_2, left_index=True, right_index=True)
+m5 = pd.merge(m4, int_df_0, left_index=True, right_index=True)
+m6 = pd.merge(m5, int_df_1, left_index=True, right_index=True)
+m7 = pd.merge(m6, int_df_2, left_index=True, right_index=True)
+m8 = pd.merge(m7, beg_df_0, left_index=True, right_index=True)
+m9 = pd.merge(m8, beg_df_1, left_index=True, right_index=True)
+m10 = pd.merge(m9, beg_df_2, left_index=True, right_index=True)
+
+m10.columns = ['expert_effort_0', 'expert_effort_1', 'expert_effort_2',  'advanced_effort_0', 'advanced_effort_1',
+               'advanced_effort_2', 'intermediate_effort_0', 'intermediate_effort_1', 'intermediate_effort_2',
+               'beginner_effort_0', 'beginner_effort_1', 'beginner_effort_2']
+
+
+print(m10.describe())
+
+
