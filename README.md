@@ -1,6 +1,7 @@
 # Title: Probability of Passing IS590PR
 
 ## Team Member(s):  Daria Orlowska & Michelle Twist
+The team created the Simulation concept together. Michelle started with quizzes and creating outline of functions with docstrings. The team worked on everything together, Daria creating random group assignment function, Michelle creating selected group assignment function. Michelle created final grade function and graphs. Daria created participation and effort breakdowns. Both worked on the final tweaks together, creating additional graphs. 
 
 # Monte Carlo Simulation Scenario & Purpose:
 Given several aspects of a student's history with programming as well as how the course work is graded, we will use this simulation to predict the grade outcome for a given student. We will be using the syllabus for this course, the randomness from group assignments, and the grader's scale to determine how well a student will do in this course. 
